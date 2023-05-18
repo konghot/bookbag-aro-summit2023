@@ -111,9 +111,10 @@ exit
 +
 [source,sh,role=execute]
 ----
+export CLUSTER_RESOURCE_GROUP=$(az aro show -n aro-cluster-${GUID} --resource-group openenv-${GUID} --query clusterProfile.resourceGroupId -o tsv | rev | cut -d'/' -f-1 | rev)
 export PVC_NAME=$(oc get $POD_NAME -o jsonpath='{.spec.volumes[2].persistentVolumeClaim.claimName}')
 export PV_NAME=$(oc get pvc $PVC_NAME -o jsonpath='{.spec.volumeName}')
 oc get pv $PV_NAME
-az disk show --resource-group openenv-${GUID} -n $PV_NAME
+az disk show --resource-group $CLUSTER_RESOURCE_GROUP -n $PV_NAME
 ----
 + 
